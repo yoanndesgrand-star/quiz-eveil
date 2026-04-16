@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Quiz ÉVEIL — Quel est ton niveau de transformation ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#111;min-height:100vh;display:flex;align-items:center;justify-content:center;font-family:'Montserrat',sans-serif;padding:1rem;}
+.page{width:100%;max-width:540px;}
+.card{background:#1C1C1C;border-radius:20px;padding:2.5rem 2rem;color:#F5F0E8;min-height:480px;display:flex;flex-direction:column;}
+.logo{font-family:'Cormorant Garamond',serif;font-size:30px;color:#C9A96E;letter-spacing:10px;text-align:center;margin-bottom:0.25rem;}
+.tagline{font-size:10px;color:#555;text-align:center;letter-spacing:3px;text-transform:uppercase;margin-bottom:2rem;}
+.title{font-family:'Cormorant Garamond',serif;font-size:24px;color:#F5F0E8;margin-bottom:0.625rem;line-height:1.3;}
+.sub{font-size:12px;color:#777;margin-bottom:1.5rem;line-height:1.8;}
+.progress{height:1px;background:#2a2a2a;margin-bottom:2rem;}
+.progress-bar{height:1px;background:#C9A96E;transition:width 0.5s ease;}
+.qnum{font-size:10px;color:#C9A96E;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
+.question{font-size:16px;color:#F5F0E8;margin-bottom:1.5rem;line-height:1.6;font-weight:400;}
+.option{background:#222;border:1px solid #2e2e2e;border-radius:10px;padding:0.9rem 1.1rem;margin-bottom:0.625rem;cursor:pointer;font-size:12px;color:#aaa;transition:all 0.2s;font-family:'Montserrat',sans-serif;text-align:left;width:100%;display:block;}
+.option:hover{border-color:#C9A96E55;color:#ddd;background:#262620;}
+.option.sel{border-color:#C9A96E;background:#231f12;color:#C9A96E;}
+.btn{background:#C9A96E;color:#111;border:none;border-radius:10px;padding:1rem 2rem;font-family:'Montserrat',sans-serif;font-size:12px;font-weight:500;cursor:pointer;width:100%;margin-top:auto;letter-spacing:2px;text-transform:uppercase;transition:opacity 0.2s;}
+.btn:hover{opacity:0.85;}
+.btn:disabled{opacity:0.3;cursor:not-allowed;}
+.btn-ghost{background:transparent;color:#C9A96E;border:1px solid #C9A96E33;border-radius:10px;padding:0.875rem 2rem;font-family:'Montserrat',sans-serif;font-size:12px;cursor:pointer;width:100%;margin-top:0.75rem;letter-spacing:2px;text-transform:uppercase;transition:all 0.2s;}
+.btn-ghost:hover{border-color:#C9A96E66;}
+.input{background:#222;border:1px solid #2e2e2e;border-radius:10px;padding:0.9rem 1.1rem;font-family:'Montserrat',sans-serif;font-size:13px;color:#F5F0E8;width:100%;margin-bottom:0.75rem;outline:none;transition:border-color 0.2s;}
+.input:focus{border-color:#C9A96E55;}
+.input::placeholder{color:#3a3a3a;}
+.label{font-size:10px;color:#666;letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:0.35rem;}
+.box{background:#222;border:1px solid #2a2a2a;border-radius:10px;padding:1.1rem;margin-bottom:1.25rem;}
+.box-title{font-size:10px;color:#C9A96E;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.5rem;}
+.box-text{font-size:12px;color:#777;line-height:1.7;}
+.score-ring{width:120px;height:120px;border-radius:50%;border:1px solid #C9A96E;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 1.5rem;}
+.score-n{font-family:'Cormorant Garamond',serif;font-size:42px;color:#C9A96E;line-height:1;}
+.score-s{font-size:9px;color:#555;letter-spacing:2px;text-transform:uppercase;}
+.level{font-family:'Cormorant Garamond',serif;font-size:20px;color:#C9A96E;text-align:center;margin-bottom:0.5rem;}
+.desc{font-size:12px;color:#888;line-height:1.8;text-align:center;margin-bottom:1.5rem;}
+.pillars{display:flex;gap:6px;margin-bottom:1.5rem;}
+.pillar{flex:1;text-align:center;}
+.pl{font-family:'Cormorant Garamond',serif;font-size:18px;color:#C9A96E;display:block;margin-bottom:4px;}
+.pb-bg{height:40px;background:#222;border-radius:4px;display:flex;align-items:flex-end;overflow:hidden;margin-bottom:4px;}
+.pb-fill{width:100%;background:linear-gradient(to top,#C9A96E,#e8c98a);border-radius:4px;transition:height 1s ease;}
+.pn{font-size:8px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.advice{background:#1a1a14;border-left:2px solid #C9A96E;border-radius:0 10px 10px 0;padding:1.25rem;margin-bottom:1.5rem;}
+.advice-title{font-size:10px;color:#C9A96E;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
+.advice-text{font-size:12px;color:#999;line-height:1.9;}
+.blur-preview{filter:blur(8px);user-select:none;pointer-events:none;opacity:0.4;margin-bottom:1rem;}
+.err{font-size:11px;color:#c06060;margin:-0.5rem 0 0.625rem;}
+.loading{text-align:center;padding:2rem 0;}
+.loading-text{font-size:12px;color:#777;letter-spacing:2px;text-transform:uppercase;}
+.dot{display:inline-block;animation:blink 1.4s infinite both;}
+.dot:nth-child(2){animation-delay:0.2s;}
+.dot:nth-child(3){animation-delay:0.4s;}
+@keyframes blink{0%,80%,100%{opacity:0;}40%{opacity:1;}}
+.divider{height:1px;background:#2a2a2a;margin:1.5rem 0;}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="card" id="card">
+    <div class="logo">ÉVEIL</div>
+    <div class="tagline">Méthode de transformation masculine</div>
+    <div id="content"></div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+<script>
+const SVC='service_r55jxfb';
+const T_COACH='template_ol76r2g';
+const T_USER='template_5nz9y5h';
+const EJS_KEY='lilCVTQA7kd2h_ppr';
+const ANTHROPIC_KEY='';
+
+emailjs.init(EJS_KEY);
+
+const questions=[
+  {p:'É',pn:'Énergie',q:"Comment te sens-tu au réveil le matin ?",o:["Épuisé, j'aurais voulu dormir encore","Fatigué mais je me lève quand même","Correct, j'arrive à démarrer ma journée","Bien, plein d'énergie dès le réveil"]},
+  {p:'V',pn:'Vie',q:"T'arrives à prendre du temps juste pour toi ?",o:["Non, je vis uniquement pour les autres","Rarement et quand ça arrive je culpabilise","Parfois, mais c'est difficile à s'autoriser","Oui, c'est une priorité pour moi"]},
+  {p:'É',pn:'Entraînement',q:"Quel est ton rapport au sport en ce moment ?",o:["Je ne fais rien du tout","Je fais quelque chose 1 fois par semaine","Je m'entraîne 2 à 3 fois par semaine","Je m'entraîne 4 fois ou plus, c'est une habitude"]},
+  {p:'I',pn:'Identité',q:"T'arrives à exprimer tes émotions ?",o:["Jamais — un homme doit rester fort","Difficilement, je les cache la plupart du temps","Parfois, avec les personnes de confiance","Oui, je les vis pleinement sans honte"]},
+  {p:'L',pn:'Lâcher-prise',q:"Comment gères-tu le stress au quotidien ?",o:["Je garde tout en moi jusqu'à exploser","J'évite d'y penser et j'espère que ça passe","J'ai quelques outils mais c'est compliqué","Je gère bien grâce à des rituels"]},
+  {p:'I',pn:'Identité',q:"T'as l'impression d'être aligné avec toi-même ?",o:["Non, je me sens vraiment perdu","Pas vraiment, je joue un rôle selon les situations","Parfois, mais il manque quelque chose d'essentiel","Oui, je suis en accord avec qui je suis"]},
+  {p:'É',pn:'Entraînement',q:"Comment te sens-tu dans ton corps aujourd'hui ?",o:["Je ne me reconnais plus dans le miroir","Je vois des changements que je n'aime pas","Correct, mais j'aimerais me sentir mieux","Satisfait de ma forme et de mon énergie"]}
+];
+
+const levels=[
+  {min:0,max:25,name:"En veille",desc:"Tu traverses la vie en mode automatique. Tu sens que quelque chose manque mais tu n'arrives pas encore à le nommer. C'est exactement là que tout commence."},
+  {min:26,max:50,name:"En transition",desc:"Quelque chose s'éveille en toi. Tu as des éclairs de conscience mais tu n'as pas encore trouvé le chemin pour te retrouver pleinement."},
+  {min:51,max:75,name:"En éveil partiel",desc:"Tu es sur le bon chemin. Tu as déjà fait des choix courageux pour toi. Il reste des zones à explorer pour atteindre ton plein potentiel."},
+  {min:76,max:100,name:"En plein éveil",desc:"Tu es aligné avec toi-même. Tu t'accordes la permission de prendre soin de toi. Tu es un exemple rare parmi les hommes de ta génération."}
+];
+
+let cur=0,answers=[],scores=[],pillarScores={'É':[],'V':[],'I':[],'L':[]};
+
+function getScore(){return Math.round((scores.reduce((a,b)=>a+b,0)/(questions.length*3))*100);}
+function getLevel(s){return levels.find(l=>s>=l.min&&s<=l.max)||levels[0];}
+function getPillarScore(l){const a=pillarScores[l];if(!a||!a.length)return 0;return Math.round((a.reduce((x,y)=>x+y,0)/(a.length*3))*100);}
+
+async function getAIAdvice(prenom,score,level,ps){
+  if(!ANTHROPIC_KEY) return getStaticAdvice(score,ps);
+  try{
+    const prompt=`Tu es Yoann, coach de la Méthode ÉVEIL — transformation masculine pour hommes 35-55 ans. Tu parles directement à ${prenom} (tu le tutoies, ton chaleureux mais direct).
+
+Score global : ${score}/100 — Niveau : ${level}
+Scores par pilier :
+- Énergie : ${ps.E}%
+- Vie (temps pour soi) : ${ps.V}%
+- Entraînement : ${ps.T}%
+- Identité (émotions) : ${ps.I}%
+- Lâcher-prise (stress) : ${ps.L}%
+
+Écris une analyse personnalisée de 5-6 phrases maximum. Commence par valider là où il en est. Identifie ses 2 piliers les plus faibles et donne 1 conseil concret et actionnable pour chacun. Termine par une phrase d'encouragement. Style naturel, humain, pas corporate. Pas de listes à puces, juste du texte fluide.`;
+
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','x-api-key':ANTHROPIC_KEY,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-opus-4-20250514',max_tokens:400,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await res.json();
+    return data.content[0].text;
+  }catch(e){return getStaticAdvice(score,ps);}
+}
+
+function getStaticAdvice(score,ps){
+  const low=[];
+  if(ps.E<50)low.push("Pour ton énergie : commence par 10 minutes de marche le matin avant de regarder ton téléphone. Ce simple rituel va tout changer.");
+  if(ps.V<50)low.push("Pour ton temps : bloque 30 minutes par semaine dans ton agenda juste pour toi. Pas négociable, comme un rendez-vous client.");
+  if(ps.T<50)low.push("Pour l'entraînement : commence par 2 séances de 30 minutes par semaine. La régularité prime sur l'intensité.");
+  if(ps.I<50)low.push("Pour tes émotions : essaie d'écrire 3 lignes le soir sur ce que tu as ressenti dans ta journée. C'est le premier pas.");
+  if(ps.L<50)low.push("Pour le stress : 5 minutes de respiration profonde avant de dormir. 4 secondes inspirer, 4 tenir, 4 expirer.");
+  if(low.length===0)return "Tu es sur une belle dynamique. Maintiens tes rituels et continue à t'accorder cette permission de prendre soin de toi — c'est ta force.";
+  return low.slice(0,2).join(' ')+' Le chemin est là, il suffit de faire un pas à la fois.';
+}
+
+function renderStart(){
+  document.getElementById('content').innerHTML=`
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
+      <div class="title">Quel est ton niveau d'éveil ?</div>
+      <div class="sub">7 questions pour mesurer où tu en es sur les 5 piliers de la Méthode ÉVEIL.</div>
+      <div class="box">
+        <div class="box-title">Ce que tu vas découvrir</div>
+        <div class="box-text">✦ Ton score ÉVEIL sur 100<br>✦ Ton niveau de transformation<br>✦ Tes axes prioritaires<br>✦ Des conseils personnalisés pour progresser</div>
+      </div>
+      <div style="font-size:10px;color:#444;text-align:center;margin-bottom:1.25rem;">⏱ 2 minutes · Résultats + conseils personnalisés</div>
+      <button class="btn" onclick="startQuiz()">Commencer le test</button>
+    </div>`;}
+
+function startQuiz(){
+  cur=0;answers=[];scores=[];pillarScores={'É':[],'V':[],'I':[],'L':[]};
+  renderQuestion();}
+
+function renderQuestion(){
+  const q=questions[cur];
+  const pct=Math.round((cur/questions.length)*100);
+  document.getElementById('content').innerHTML=`
+    <div class="progress"><div class="progress-bar" style="width:${pct}%"></div></div>
+    <div class="qnum">${cur+1} / ${questions.length} · ${q.p} — ${q.pn}</div>
+    <div class="question">${q.q}</div>
+    <div id="opts">${q.o.map((o,i)=>`<button class="option" onclick="selectOpt(${i})" id="o${i}">${o}</button>`).join('')}</div>
+    <div style="margin-top:auto;padding-top:1rem;">
+      <button class="btn" id="nbtn" onclick="nextQ()" disabled>Suivant →</button>
+    </div>`;
+  if(answers[cur]!==undefined){
+    document.getElementById('o'+answers[cur]).classList.add('sel');
+    document.getElementById('nbtn').disabled=false;}}
+
+function selectOpt(i){
+  answers[cur]=i;scores[cur]=i;
+  document.querySelectorAll('.option').forEach(b=>b.classList.remove('sel'));
+  document.getElementById('o'+i).classList.add('sel');
+  document.getElementById('nbtn').disabled=false;}
+
+function nextQ(){
+  if(answers[cur]===undefined)return;
+  const q=questions[cur];
+  if(!pillarScores[q.p])pillarScores[q.p]=[];
+  pillarScores[q.p].push(answers[cur]);
+  if(cur<questions.length-1){cur++;renderQuestion();}
+  else{renderForm();}}
+
+function renderForm(){
+  document.getElementById('content').innerHTML=`
+    <div class="title">Presque là !</div>
+    <div class="sub">Tes résultats et tes conseils personnalisés sont prêts. Entre tes coordonnées pour y accéder.</div>
+    <div class="blur-preview">
+      <div class="score-ring"><div class="score-n">??</div><div class="score-s">/ 100</div></div>
+      <div class="level" style="text-align:center;margin-bottom:0;">— — — — —</div>
+    </div>
+    <label class="label">Prénom</label>
+    <input class="input" type="text" id="fp" placeholder="Ton prénom"/>
+    <label class="label">Email</label>
+    <input class="input" type="email" id="fe" placeholder="ton@email.com"/>
+    <div class="err" id="eerr" style="display:none;">Email invalide</div>
+    <label class="label">Téléphone</label>
+    <input class="input" type="tel" id="ft" placeholder="+33 6 XX XX XX XX"/>
+    <div style="font-size:10px;color:#333;text-align:center;margin-bottom:1rem;">🔒 Données confidentielles · Jamais partagées</div>
+    <button class="btn" id="sbtn" onclick="submitForm()">Voir mes résultats + conseils →</button>`;}
+
+function validateEmail(e){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);}
+
+async function submitForm(){
+  const prenom=document.getElementById('fp').value.trim();
+  const email=document.getElementById('fe').value.trim();
+  const tel=document.getElementById('ft').value.trim();
+  if(!prenom||!email||!tel){alert('Merci de remplir tous les champs.');return;}
+  if(!validateEmail(email)){document.getElementById('eerr').style.display='block';return;}
+  document.getElementById('eerr').style.display='none';
+  const btn=document.getElementById('sbtn');
+  btn.disabled=true;btn.textContent='Génération de ton analyse...';
+
+  const score=getScore();
+  const level=getLevel(score);
+  const ps={E:getPillarScore('É'),V:getPillarScore('V'),T:getPillarScore('É'),I:getPillarScore('I'),L:getPillarScore('L')};
+
+  document.getElementById('content').innerHTML=`
+    <div class="loading">
+      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;color:#C9A96E;margin-bottom:1.5rem;">ÉVEIL</div>
+      <div class="loading-text">Génération de ton analyse<span class="dot">.</span><span class="dot">.</span><span class="dot">.</span></div>
+      <div style="margin-top:1rem;font-size:11px;color:#444;">Tes conseils personnalisés arrivent</div>
+    </div>`;
+
+  const advice=await getAIAdvice(prenom,score,level.name,ps);
+
+  const emailBody=`Bonjour ${prenom},
+
+Ton score ÉVEIL : ${score}/100
+Ton niveau : ${level.name}
+
+Tes résultats par pilier :
+Énergie : ${ps.E}%
+Vie : ${ps.V}%
+Entraînement : ${ps.T}%
+Identité : ${ps.I}%
+Lâcher-prise : ${ps.L}%
+
+---
+
+TES CONSEILS PERSONNALISÉS :
+
+${advice}
+
+---
+
+Pour aller plus loin, réserve ton bilan offert 15 min :
+https://calendly.com/contact-yoanndesgrand/bilan
+
+À très vite,
+Yoann | Coach Méthode ÉVEIL`;
+
+  try{
+    await emailjs.send(SVC,T_COACH,{prenom,email,tel,score,niveau:level.name,pillar_e:ps.E,pillar_v:ps.V,pillar_i:ps.I,pillar_l:ps.L,to_email:'yoann.desgrand@gmail.com'});
+    await emailjs.send(SVC,T_USER,{prenom,email,tel,score,niveau:level.name,pillar_e:ps.E,pillar_v:ps.V,pillar_i:ps.I,pillar_l:ps.L,to_email:email,advice:advice,full_body:emailBody});
+  }catch(e){console.error(e);}
+
+  renderResults(prenom,score,level,ps,advice);}
+
+function renderResults(prenom,score,level,ps,advice){
+  const pillars=['É','V','É','I','L'];
+  const pnames=['Énergie','Vie','Entraît.','Identité','Lâcher'];
+  const pkeys=[ps.E,ps.V,ps.T,ps.I,ps.L];
+  document.getElementById('content').innerHTML=`
+    <div class="score-ring"><div class="score-n">${score}</div><div class="score-s">/ 100</div></div>
+    <div class="level">${level.name}</div>
+    <div class="desc">${level.desc}</div>
+    <div class="pillars">${pillars.map((p,i)=>`<div class="pillar">
+      <span class="pl">${p}</span>
+      <div class="pb-bg"><div class="pb-fill" style="height:${pkeys[i]}%"></div></div>
+      <span class="pn">${pnames[i]}</span>
+    </div>`).join('')}</div>
+    <div class="divider"></div>
+    <div class="advice">
+      <div class="advice-title">Tes conseils personnalisés</div>
+      <div class="advice-text">${advice}</div>
+    </div>
+    <div style="font-size:10px;color:#444;text-align:center;margin-bottom:1rem;">Analyse complète envoyée sur ton email · Vérifie tes spams</div>
+    <button class="btn" onclick="window.location.href='https://calendly.com/contact-yoanndesgrand/bilan'">Réserver mon bilan offert 15 min</button>
+    <button class="btn-ghost" onclick="startQuiz()">Refaire le test</button>`;}
+
+renderStart();
+</script>
+</body>
+</html>
