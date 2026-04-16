@@ -44,10 +44,11 @@ body{background:#111;min-height:100vh;display:flex;align-items:center;justify-co
 .pl{font-family:'Cormorant Garamond',serif;font-size:18px;color:#C9A96E;display:block;margin-bottom:4px;}
 .pb-bg{height:40px;background:#222;border-radius:4px;display:flex;align-items:flex-end;overflow:hidden;margin-bottom:4px;}
 .pb-fill{width:100%;background:linear-gradient(to top,#C9A96E,#e8c98a);border-radius:4px;transition:height 1s ease;}
-.pn{font-size:9px;color:#888;letter-spacing:0px;text-transform:uppercase;}
+.pn{font-size:9px;color:#888;letter-spacing:0px;text-transform:uppercase;display:block;margin-bottom:2px;}
+.ps{font-size:11px;color:#C9A96E;font-weight:500;}
 .advice{background:#1a1a14;border-left:2px solid #C9A96E;border-radius:0 10px 10px 0;padding:1.25rem;margin-bottom:1.5rem;}
 .advice-title{font-size:10px;color:#C9A96E;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
-.advice-text{font-size:12px;color:#999;line-height:1.9;}
+.advice-text{font-size:14px;color:#bbb;line-height:2.0;}
 .blur-preview{filter:blur(8px);user-select:none;pointer-events:none;opacity:0.4;margin-bottom:1rem;}
 .err{font-size:11px;color:#c06060;margin:-0.5rem 0 0.625rem;}
 .loading{text-align:center;padding:2rem 0;}
@@ -303,7 +304,7 @@ Yoann | Coach Méthode ÉVEIL`;
 
 function renderResults(prenom,score,level,ps,advice){
   const pillars=['É','V','É','I','L'];
-  const pnames=['Énergie','Vie','Entraît.','Identité','Lâcher'];
+  const pnames=['Énergie','Vie','Entraîn.','Identité','Lâcher-prise'];
   const pkeys=[ps.E,ps.V,ps.T,ps.I,ps.L];
   document.getElementById('content').innerHTML=`
     <div class="score-ring"><div class="score-n">${score}</div><div class="score-s">/ 100</div></div>
@@ -313,6 +314,7 @@ function renderResults(prenom,score,level,ps,advice){
       <span class="pl">${p}</span>
       <div class="pb-bg"><div class="pb-fill" style="height:${pkeys[i]}%"></div></div>
       <span class="pn">${pnames[i]}</span>
+      <span class="ps">${pkeys[i]}%</span>
     </div>`).join('')}</div>
     <div class="divider"></div>
     <div class="advice">
