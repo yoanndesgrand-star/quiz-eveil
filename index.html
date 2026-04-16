@@ -44,7 +44,7 @@ body{background:#111;min-height:100vh;display:flex;align-items:center;justify-co
 .pl{font-family:'Cormorant Garamond',serif;font-size:18px;color:#C9A96E;display:block;margin-bottom:4px;}
 .pb-bg{height:40px;background:#222;border-radius:4px;display:flex;align-items:flex-end;overflow:hidden;margin-bottom:4px;}
 .pb-fill{width:100%;background:linear-gradient(to top,#C9A96E,#e8c98a);border-radius:4px;transition:height 1s ease;}
-.pn{font-size:8px;color:#444;letter-spacing:1px;text-transform:uppercase;}
+.pn{font-size:9px;color:#888;letter-spacing:0px;text-transform:uppercase;}
 .advice{background:#1a1a14;border-left:2px solid #C9A96E;border-radius:0 10px 10px 0;padding:1.25rem;margin-bottom:1.5rem;}
 .advice-title{font-size:10px;color:#C9A96E;letter-spacing:2px;text-transform:uppercase;margin-bottom:0.75rem;}
 .advice-text{font-size:12px;color:#999;line-height:1.9;}
@@ -127,14 +127,56 @@ Scores par pilier :
 }
 
 function getStaticAdvice(score,ps){
-  const low=[];
-  if(ps.E<50)low.push("Pour ton énergie : commence par 10 minutes de marche le matin avant de regarder ton téléphone. Ce simple rituel va tout changer.");
-  if(ps.V<50)low.push("Pour ton temps : bloque 30 minutes par semaine dans ton agenda juste pour toi. Pas négociable, comme un rendez-vous client.");
-  if(ps.T<50)low.push("Pour l'entraînement : commence par 2 séances de 30 minutes par semaine. La régularité prime sur l'intensité.");
-  if(ps.I<50)low.push("Pour tes émotions : essaie d'écrire 3 lignes le soir sur ce que tu as ressenti dans ta journée. C'est le premier pas.");
-  if(ps.L<50)low.push("Pour le stress : 5 minutes de respiration profonde avant de dormir. 4 secondes inspirer, 4 tenir, 4 expirer.");
-  if(low.length===0)return "Tu es sur une belle dynamique. Maintiens tes rituels et continue à t'accorder cette permission de prendre soin de toi — c'est ta force.";
-  return low.slice(0,2).join(' ')+' Le chemin est là, il suffit de faire un pas à la fois.';
+  const adviceMap={
+    E:{
+      low:"Pour ton énergie : commence par 10 minutes de mouvement le matin, avant de regarder ton téléphone. Même une courte marche suffit — ton corps a besoin de s'activer avant ton esprit.",
+      mid:"Ton énergie est correcte mais peut aller plus loin. Regarde la qualité de ton sommeil — couche-toi 30 minutes plus tôt pendant une semaine et observe la différence.",
+      high:null
+    },
+    V:{
+      low:"Pour le temps pour toi : bloque 1 heure par semaine dans ton agenda uniquement pour toi. Pas pour ta famille, pas pour le travail — juste toi. Traite ce rendez-vous comme un rendez-vous client.",
+      mid:"Tu t'accordes parfois du temps mais tu culpabilises encore. Rappelle-toi : prendre soin de toi ce n'est pas de l'égoïsme, c'est ce qui te permet d'être là pleinement pour les autres.",
+      high:null
+    },
+    T:{
+      low:"Pour l'entraînement : commence par 2 séances de 30 minutes par semaine, pas plus. La régularité prime toujours sur l'intensité. Lance-toi sans te poser de questions.",
+      mid:"Tu t'entraînes mais tu peux optimiser. Assure-toi d'avoir au moins 1 séance de musculation par semaine — c'est le meilleur outil contre la perte musculaire après 35 ans.",
+      high:null
+    },
+    I:{
+      low:"Pour tes émotions : essaie d'écrire 3 lignes le soir sur ce que tu as ressenti dans ta journée. Pas besoin d'analyser — juste nommer l'émotion. C'est le premier pas vers la liberté intérieure.",
+      mid:"Tu arrives à exprimer tes émotions parfois mais tu te censures encore. La prochaine fois que tu ressens quelque chose de fort, dis-le à voix haute à quelqu'un de confiance.",
+      high:null
+    },
+    L:{
+      low:"Pour le stress : essaie 5 minutes de respiration profonde avant de dormir. Inspire 4 secondes, retiens 4, expire 4. C'est scientifiquement prouvé pour réduire le cortisol.",
+      mid:"Tu gères le stress mais pas encore de façon fluide. Identifie le moment dans ta journée où le stress monte le plus et prépare un rituel simple pour ce moment précis.",
+      high:null
+    }
+  };
+
+  const pillars=[
+    {key:'E',score:ps.E},
+    {key:'V',score:ps.V},
+    {key:'T',score:ps.T},
+    {key:'I',score:ps.I},
+    {key:'L',score:ps.L}
+  ];
+
+  const sorted=pillars.filter(p=>p.score<75).sort((a,b)=>a.score-b.score);
+
+  if(sorted.length===0){
+    return "Tu es sur une belle dynamique sur tous les piliers. Continue à maintenir tes rituels et à t'accorder cette permission de prendre soin de toi — c'est rare et précieux.";
+  }
+
+  const results=[];
+  for(let i=0;i<Math.min(2,sorted.length);i++){
+    const p=sorted[i];
+    const advice=p.score<33?adviceMap[p.key].low:adviceMap[p.key].mid;
+    if(advice)results.push(advice);
+  }
+
+  return results.join(' ')+' Le chemin est là — un pas à la fois.';
 }
 
 function renderStart(){
