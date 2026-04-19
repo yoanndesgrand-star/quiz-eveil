@@ -127,32 +127,59 @@ Scores par pilier :
   }catch(e){return getStaticAdvice(score,ps);}
 }
 
+const pillarNames={E:'Énergie',V:'Vie',T:'Entraînement',I:'Identité',L:'Lâcher-prise'};
+
 function getStaticAdvice(score,ps){
   const adviceMap={
     E:{
-      low:"Pour ton énergie : commence par 10 minutes de mouvement le matin, avant de regarder ton téléphone. Même une courte marche suffit — ton corps a besoin de s'activer avant ton esprit.",
-      mid:"Ton énergie est correcte mais peut aller plus loin. Regarde la qualité de ton sommeil — couche-toi 30 minutes plus tôt pendant une semaine et observe la différence.",
-      high:null
+      low:{
+        title:"⚡ Ton énergie — priorité absolue",
+        text:"Ton niveau d'énergie est ton premier chantier. Commence par un rituel simple : dès le réveil, avant de toucher ton téléphone, fais 10 minutes de mouvement. Marche, étirements, peu importe. Ton corps a besoin de s'activer avant ton esprit. Ensuite, regarde ton sommeil — c'est là que tout se joue. Essaie de te coucher 30 minutes plus tôt pendant 7 jours. Une seule semaine. Observe la différence sur ton énergie, ton humeur, ta clarté mentale."
+      },
+      mid:{
+        title:"⚡ Ton énergie — un levier à optimiser",
+        text:"Tu as une base d'énergie correcte mais elle n'est pas encore stable. Le secret : la cohérence de tes rituels matinaux. Si tu te lèves à des heures différentes selon les jours, ton corps ne peut pas trouver son rythme. Essaie de te lever à la même heure 6 jours sur 7 — même le week-end. Ça semble anodin mais c'est l'un des leviers les plus puissants sur l'énergie chronique."
+      }
     },
     V:{
-      low:"Pour le temps pour toi : bloque 1 heure par semaine dans ton agenda uniquement pour toi. Pas pour ta famille, pas pour le travail — juste toi. Traite ce rendez-vous comme un rendez-vous client.",
-      mid:"Tu t'accordes parfois du temps mais tu culpabilises encore. Rappelle-toi : prendre soin de toi ce n'est pas de l'égoïsme, c'est ce qui te permet d'être là pleinement pour les autres.",
-      high:null
+      low:{
+        title:"🌿 Ton temps pour toi — urgent",
+        text:"Tu t'oublies complètement. Et tu le sais. Le problème ce n'est pas le manque de temps — c'est que tu ne t'autorises pas à en prendre. Voici une action concrète : ouvre ton agenda maintenant et bloque 1 heure cette semaine uniquement pour toi. Pas pour ta famille, pas pour le travail. Traite ce rendez-vous comme tu traiterais un rendez-vous avec ton meilleur client — inviolable. Cette heure c'est toi."
+      },
+      mid:{
+        title:"🌿 Ton temps pour toi — encore trop rare",
+        text:"Tu t'accordes du temps parfois, mais tu culpabilises encore quand tu le fais. Ce sentiment de culpabilité est une croyance que tu as construite depuis des années — l'idée qu'un homme doit toujours être disponible pour les autres. Rappelle-toi : prendre soin de toi n'est pas de l'égoïsme. C'est ce qui te permet d'être vraiment présent pour ceux que tu aimes. Tu ne peux pas donner ce que tu n'as pas."
+      }
     },
     T:{
-      low:"Pour l'entraînement : commence par 2 séances de 30 minutes par semaine, pas plus. La régularité prime toujours sur l'intensité. Lance-toi sans te poser de questions.",
-      mid:"Tu t'entraînes mais tu peux optimiser. Assure-toi d'avoir au moins 1 séance de musculation par semaine — c'est le meilleur outil contre la perte musculaire après 35 ans.",
-      high:null
+      low:{
+        title:"💪 Ton entraînement — le point de départ",
+        text:"Ne te mets pas la pression. L'objectif n'est pas de devenir athlète en 3 mois — c'est d'installer une habitude qui durera toute ta vie. Commence par 2 séances de 30 minutes par semaine, pas plus. Les mardis et vendredis par exemple. Sans programme compliqué — 3 exercices de base : squat, développé couché, tirage. La régularité prime toujours sur l'intensité. Dans 6 semaines, ton corps t'en demandera plus naturellement."
+      },
+      mid:{
+        title:"💪 Ton entraînement — à structurer",
+        text:"Tu t'entraînes mais tu n'optimises pas encore. La clé à ton âge : intégrer au minimum 2 séances de musculation par semaine. Pas pour l'esthétique — pour contrer la sarcopénie, cette perte naturelle de muscle qui commence dès 35 ans. Sans musculation, ton métabolisme ralentit, la graisse s'accumule au ventre et ta force diminue. Avec un programme structuré, tu peux inverser ce processus complètement."
+      }
     },
     I:{
-      low:"Pour tes émotions : essaie d'écrire 3 lignes le soir sur ce que tu as ressenti dans ta journée. Pas besoin d'analyser — juste nommer l'émotion. C'est le premier pas vers la liberté intérieure.",
-      mid:"Tu arrives à exprimer tes émotions parfois mais tu te censures encore. La prochaine fois que tu ressens quelque chose de fort, dis-le à voix haute à quelqu'un de confiance.",
-      high:null
+      low:{
+        title:"🧠 Ton identité — le plus grand chantier",
+        text:"Depuis tout petit, on t'a appris qu'un homme ne pleure pas, ne se plaint pas, encaisse tout. Résultat : tu gardes tout en toi depuis des années. Et ce que tu gardes en toi finit toujours par ressortir — sous forme de colère, d'épuisement ou d'explosion. Commence par cet exercice simple ce soir : écris 3 lignes sur ce que tu as ressenti aujourd'hui. Pas besoin d'analyser — juste nommer. Heureux. Frustré. Fatigué. Ce simple acte est le premier pas vers ta liberté intérieure."
+      },
+      mid:{
+        title:"🧠 Ton identité — à approfondir",
+        text:"Tu arrives à exprimer tes émotions dans certaines situations, mais tu te censures encore souvent. Tu joues un rôle selon les contextes — le chef au travail, le père à la maison, le gars solide avec les amis. Et toi dans tout ça ? La prochaine fois que tu ressens quelque chose de fort, pose-toi cette question : est-ce que je dis vraiment ce que je ressens, ou est-ce que je dis ce qu'on attend de moi ?"
+      }
     },
     L:{
-      low:"Pour le stress : essaie 5 minutes de respiration profonde avant de dormir. Inspire 4 secondes, retiens 4, expire 4. C'est scientifiquement prouvé pour réduire le cortisol.",
-      mid:"Tu gères le stress mais pas encore de façon fluide. Identifie le moment dans ta journée où le stress monte le plus et prépare un rituel simple pour ce moment précis.",
-      high:null
+      low:{
+        title:"🍃 Ton lâcher-prise — à construire de zéro",
+        text:"Tu portes tout. Le stress du travail, les responsabilités familiales, les problèmes à régler. Et tu gardes tout en toi parce que c'est ton rôle — le pilier. Mais ce poids finit par s'accumuler. Voici la pratique la plus simple et la plus efficace que je connaisse : 5 minutes de respiration avant de dormir. Inspire pendant 4 secondes. Retiens 4 secondes. Expire 4 secondes. Répète 5 fois. C'est prouvé scientifiquement — ça réduit le cortisol et prépare ton corps au sommeil profond."
+      },
+      mid:{
+        title:"🍃 Ton lâcher-prise — à ritualiser",
+        text:"Tu as quelques outils pour gérer le stress mais tu ne les utilises pas encore de façon régulière. Le problème : tu attends d'être stressé pour agir, alors qu'il faut pratiquer quand tu vas bien. Identifie le moment dans ta journée où le stress monte le plus — souvent en fin d'après-midi ou le soir. Et prépare un rituel simple pour ce moment précis : 3 respirations profondes, une marche de 5 minutes, ou juste poser ton téléphone pendant 10 minutes."
+      }
     }
   };
 
@@ -167,17 +194,27 @@ function getStaticAdvice(score,ps){
   const sorted=pillars.filter(p=>p.score<75).sort((a,b)=>a.score-b.score);
 
   if(sorted.length===0){
-    return "Tu es sur une belle dynamique sur tous les piliers. Continue à maintenir tes rituels et à t'accorder cette permission de prendre soin de toi — c'est rare et précieux.";
+    return `<div style="margin-bottom:1rem;">
+      <div style="font-size:13px;color:#C9A96E;font-weight:500;margin-bottom:0.5rem;">✦ Tu es sur une belle dynamique</div>
+      <div style="font-size:13px;color:#bbb;line-height:1.8;">Tous tes piliers sont bien équilibrés. Continue à maintenir tes rituels et à t'accorder cette permission de prendre soin de toi — c'est rare et précieux chez un homme de ta génération. Le prochain niveau : approfondir chaque pilier pour passer d'un équilibre correct à une vraie maîtrise.</div>
+    </div>`;
   }
 
   const results=[];
   for(let i=0;i<Math.min(2,sorted.length);i++){
     const p=sorted[i];
-    const advice=p.score<33?adviceMap[p.key].low:adviceMap[p.key].mid;
-    if(advice)results.push(advice);
+    const a=p.score<33?adviceMap[p.key].low:adviceMap[p.key].mid;
+    if(a){
+      results.push(`<div style="margin-bottom:1.25rem;padding-bottom:1.25rem;border-bottom:1px solid #2a2a2a;">
+        <div style="font-size:12px;color:#C9A96E;font-weight:500;margin-bottom:0.625rem;">${a.title}</div>
+        <div style="font-size:12px;color:#bbb;line-height:1.9;">${a.text}</div>
+      </div>`);
+    }
   }
 
-  return results.join(' ')+' Le chemin est là — un pas à la fois.';
+  results.push(`<div style="font-size:11px;color:#666;font-style:italic;text-align:center;">Un pas à la fois — c'est comme ça que tout change.</div>`);
+
+  return results.join('');
 }
 
 function renderStart(){
