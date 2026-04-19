@@ -322,8 +322,9 @@ function renderResults(prenom,score,level,ps,advice){
       <div class="advice-text">${advice}</div>
     </div>
     <div style="font-size:10px;color:#444;text-align:center;margin-bottom:1rem;">Analyse complète envoyée sur ton email · Vérifie tes spams</div>
-    <button class="btn" onclick="window.location.href='https://calendly.com/contact-yoanndesgrand/bilan-offert-30min-methode-eveil'">Réserver mon bilan offert 30 min</button>
-    <button class="btn-ghost" onclick="startQuiz()">Refaire le test</button>`;}
+    <button class="btn" onclick="window.open('https://calendly.com/contact-yoanndesgrand/bilan-offert-30min-methode-eveil','_blank')">Réserver mon bilan offert 30 min</button>
+    <a href="https://page-vente-eveil.vercel.app" target="_blank" rel="noopener" style="display:block;text-align:center;margin-top:0.875rem;font-size:11px;color:#C9A96E;text-decoration:none;letter-spacing:1px;">Découvrir la Méthode ÉVEIL complète →</a>
+    <button class="btn-ghost" onclick="startQuiz()" style="margin-top:0.625rem;">Refaire le test</button>`;}
 
 renderStart();
 </script>
