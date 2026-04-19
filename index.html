@@ -217,7 +217,44 @@ function getStaticAdvice(score,ps){
   return results.join('');
 }
 
-function renderStart(){
+function getPlainAdvice(score,ps){
+  const adviceMap={
+    E:{
+      low:{title:"ÉNERGIE — priorité absolue",text:"Ton niveau d'énergie est ton premier chantier. Commence par un rituel simple : dès le réveil, avant de toucher ton téléphone, fais 10 minutes de mouvement. Marche, étirements, peu importe. Ton corps a besoin de s'activer avant ton esprit. Ensuite, regarde ton sommeil — c'est là que tout se joue. Essaie de te coucher 30 minutes plus tôt pendant 7 jours. Observe la différence sur ton énergie, ton humeur, ta clarté mentale."},
+      mid:{title:"ÉNERGIE — un levier à optimiser",text:"Tu as une base d'énergie correcte mais elle n'est pas encore stable. Le secret : la cohérence de tes rituels matinaux. Essaie de te lever à la même heure 6 jours sur 7 — même le week-end. Ça semble anodin mais c'est l'un des leviers les plus puissants sur l'énergie chronique."}
+    },
+    V:{
+      low:{title:"VIE — temps pour toi — urgent",text:"Tu t'oublies complètement. Le problème ce n'est pas le manque de temps — c'est que tu ne t'autorises pas à en prendre. Action concrète : ouvre ton agenda et bloque 1 heure cette semaine uniquement pour toi. Pas pour ta famille, pas pour le travail. Traite ce rendez-vous comme un rendez-vous avec ton meilleur client — inviolable."},
+      mid:{title:"VIE — temps pour toi — encore trop rare",text:"Tu t'accordes du temps parfois, mais tu culpabilises encore quand tu le fais. Rappelle-toi : prendre soin de toi n'est pas de l'égoïsme. C'est ce qui te permet d'être vraiment présent pour ceux que tu aimes. Tu ne peux pas donner ce que tu n'as pas."}
+    },
+    T:{
+      low:{title:"ENTRAÎNEMENT — le point de départ",text:"Commence par 2 séances de 30 minutes par semaine, pas plus. Les mardis et vendredis par exemple. Sans programme compliqué — 3 exercices de base : squat, développé couché, tirage. La régularité prime toujours sur l'intensité. Dans 6 semaines, ton corps t'en demandera plus naturellement."},
+      mid:{title:"ENTRAÎNEMENT — à structurer",text:"Tu t'entraînes mais tu n'optimises pas encore. La clé à ton âge : intégrer au minimum 2 séances de musculation par semaine. Sans musculation, ton métabolisme ralentit et la graisse s'accumule au ventre. Avec un programme structuré, tu peux inverser ce processus complètement."}
+    },
+    I:{
+      low:{title:"IDENTITÉ — le plus grand chantier",text:"Tu gardes tout en toi depuis des années. Ce que tu gardes finit toujours par ressortir — sous forme de colère, d'épuisement ou d'explosion. Exercice ce soir : écris 3 lignes sur ce que tu as ressenti aujourd'hui. Pas besoin d'analyser — juste nommer. Heureux. Frustré. Fatigué. Ce simple acte est le premier pas vers ta liberté intérieure."},
+      mid:{title:"IDENTITÉ — à approfondir",text:"Tu arrives à exprimer tes émotions dans certaines situations, mais tu te censures encore souvent. La prochaine fois que tu ressens quelque chose de fort, pose-toi cette question : est-ce que je dis vraiment ce que je ressens, ou est-ce que je dis ce qu'on attend de moi ?"}
+    },
+    L:{
+      low:{title:"LÂCHER-PRISE — à construire",text:"La pratique la plus simple et la plus efficace : 5 minutes de respiration avant de dormir. Inspire pendant 4 secondes. Retiens 4 secondes. Expire 4 secondes. Répète 5 fois. C'est prouvé scientifiquement — ça réduit le cortisol et prépare ton corps au sommeil profond."},
+      mid:{title:"LÂCHER-PRISE — à ritualiser",text:"Identifie le moment dans ta journée où le stress monte le plus. Et prépare un rituel simple pour ce moment précis : 3 respirations profondes, une marche de 5 minutes, ou juste poser ton téléphone pendant 10 minutes. Pratique quand tu vas bien — pas seulement quand tu es à bout."}
+    }
+  };
+
+  const pillars=[{key:'E',score:ps.E},{key:'V',score:ps.V},{key:'T',score:ps.T},{key:'I',score:ps.I},{key:'L',score:ps.L}];
+  const sorted=pillars.filter(p=>p.score<75).sort((a,b)=>a.score-b.score);
+
+  if(sorted.length===0) return "Tu es sur une belle dynamique sur tous les piliers. Continue à maintenir tes rituels et à t'accorder cette permission de prendre soin de toi — c'est rare et précieux.";
+
+  const results=[];
+  for(let i=0;i<Math.min(2,sorted.length);i++){
+    const p=sorted[i];
+    const a=p.score<33?adviceMap[p.key].low:adviceMap[p.key].mid;
+    if(a) results.push(`--- ${a.title} ---\n\n${a.text}`);
+  }
+  results.push("\nUn pas à la fois — c'est comme ça que tout change.");
+  return results.join('\n\n');
+}
   document.getElementById('content').innerHTML=`
     <div style="flex:1;display:flex;flex-direction:column;justify-content:center;">
       <div class="title">Quel est ton niveau d'éveil ?</div>
@@ -305,6 +342,7 @@ async function submitForm(){
     </div>`;
 
   const advice=await getAIAdvice(prenom,score,level.name,ps);
+  const advicePlain=getPlainAdvice(score,ps);
 
   const emailBody=`Bonjour ${prenom},
 
@@ -322,11 +360,14 @@ Lâcher-prise : ${ps.L}%
 
 TES CONSEILS PERSONNALISÉS :
 
-${advice}
+${advicePlain}
 
 ---
 
-Pour aller plus loin, réserve ton bilan offert 15 min :
+Pour aller plus loin, découvre la Méthode ÉVEIL complète :
+https://page-vente-eveil.vercel.app
+
+Réserve ton bilan offert 30 min :
 https://calendly.com/contact-yoanndesgrand/bilan-offert-30min-methode-eveil
 
 À très vite,
@@ -334,7 +375,7 @@ Yoann | Coach Méthode ÉVEIL`;
 
   try{
     await emailjs.send(SVC,T_COACH,{prenom,email,tel,score,niveau:level.name,pillar_e:ps.E,pillar_v:ps.V,pillar_i:ps.I,pillar_l:ps.L,to_email:'yoann.desgrand@gmail.com'});
-    await emailjs.send(SVC,T_USER,{prenom,email,tel,score,niveau:level.name,pillar_e:ps.E,pillar_v:ps.V,pillar_i:ps.I,pillar_l:ps.L,to_email:email,advice:advice,full_body:emailBody});
+    await emailjs.send(SVC,T_USER,{prenom,email,tel,score,niveau:level.name,pillar_e:ps.E,pillar_v:ps.V,pillar_i:ps.I,pillar_l:ps.L,to_email:email,advice:advicePlain,full_body:emailBody});
   }catch(e){console.error(e);}
 
   renderResults(prenom,score,level,ps,advice);}
